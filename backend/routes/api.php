@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +20,17 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::name('api')->group(function() {
+    // Test route
     Route::get('test', function() {
         return response()->json(['message'=> 'HelloWorld!'], 200);
+    });
+
+    // login Routes
+    Route::controller(AuthController::class)->group(function () {
+        Route::post('login', 'login');
+        Route::post('register', 'register');
+        Route::post('logout', 'logout');
+        // Route::post('refresh', 'refresh');
+    
     });
 });
