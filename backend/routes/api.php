@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ArticleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,5 +33,9 @@ Route::name('api')->group(function() {
         Route::post('logout', 'logout');
         // Route::post('refresh', 'refresh');
     
+    });
+
+    Route::controller(ArticleController::class)->group(function () {
+        Route::get('getArticles', 'index');
     });
 });
