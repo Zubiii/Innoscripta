@@ -31,11 +31,11 @@ Route::name('api')->group(function() {
         Route::post('login', 'login');
         Route::post('register', 'register');
         Route::post('logout', 'logout');
-        // Route::post('refresh', 'refresh');
     
     });
 
     Route::controller(ArticleController::class)->group(function () {
-        Route::get('getArticles', 'index');
+        Route::get('get-articles', 'index');
+        Route::post('article', 'getArticleById');
     });
 });

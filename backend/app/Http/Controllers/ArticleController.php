@@ -14,7 +14,27 @@ class ArticleController extends Controller
 
     public function index()
     {
-        $articles = Article::orderBy('created_at','desc')->paginate(10);
-        return response()->json($articles);
+        $articles = Article::latest()->get();;
+        return response()->json([
+            "status" => 200,
+            "data" => $articles
+        ]);
+    }
+
+    public function getArticleById(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'id' => 'required|integer|exists:articles,id'
+            ]);
+
+            $article = Article::find($validatedData['id']);
+            return response()->json([
+                "status" => 200,
+                "data" => $article
+            ]);
+        } catch(\Exception $e){
+            return response()->json($e);
+        }
     }
 }
