@@ -52,14 +52,20 @@ class FetchArticles extends Command
             foreach ($data['results'] as $item) {
                 $existingArticle = Article::where('heading', $item['title'])->first();
 
-                if($existingArticle) {
+                $imgUrl = !empty($item['media'][0]['media-metadata'][0]['url']) 
+                        ? $item['media'][0]['media-metadata'][0]['url'] 
+                        : '';
+                // dd($img);
+
+                if(!$existingArticle) {
                     Article::create([
-                        'heading' => $item['title'],
-                        'description' => $item['abstract'],
-                        'category' => $item['section'],
-                        'source' => $item['source'],
-                        'arthur' => $item['byline'],
-                        'writtenDate' => $item['published_date'],
+                        'heading' => $item['title'] ?? '',
+                        'description' => $item['abstract'] ?? '',
+                        'category' => $item['section'] ?? '',
+                        'source' => $item['source'] ?? '',
+                        'arthur' => $item['byline'] ?? '',
+                        'imgUrl' => $imgUrl,
+                        'writtenDate' => $item['published_date'] . '',
                         // Add all necessary fields
                     ]);
                 } else {
@@ -87,14 +93,15 @@ class FetchArticles extends Command
             foreach ($data['articles'] as $item) {
                 $existingArticle = Article::where('heading', $item['title'])->first();
 
-                if($existingArticle) {
+                if(!$existingArticle) {
                     Article::create([
-                        'heading' => $item['title'],
-                        'description' => $item['description'],
+                        'heading' => $item['title'] ?? '',
+                        'description' => $item['description'] ?? '',
                         'category' => 'News', // Not provided
-                        'source' => $item['source']['name'],
-                        'arthur' => $item['author'],
-                        'writtenDate' => $item['publishedAt'],
+                        'source' => $item['source']['name'] ?? '',
+                        'arthur' => $item['author'] ?? '',
+                        'imgUrl' => $item['urlToImage'] ?? '',
+                        'writtenDate' => $item['publishedAt'] . '',
                         // Add all necessary fields
                     ]);
                 } else {
