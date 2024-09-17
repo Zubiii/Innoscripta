@@ -2,8 +2,11 @@
 import { useEffect, useState } from "react";
 import { apiRequest } from "../utils/api";
 import PanelBox from "../components/common/PanelBox";
+import { useRouter } from "next/navigation";
 
 const Articles = () => {
+  const router = useRouter();
+
   const [userName, setUserName] = useState("");
   const [articles, setArticles] = useState([]);
 
@@ -31,7 +34,11 @@ const Articles = () => {
         {/* filters */}
         <div className="mt-5 w-full text-end">
           <span>Filters:</span>
-          <select name="cars" id="cars" className="mx-5 bg-slate-50 px-3 py-2 rounded">
+          <select
+            name="cars"
+            id="cars"
+            className="mx-5 bg-slate-50 px-3 py-2 rounded"
+          >
             <option value="">Filter by arthur</option>
             <option value="saab">Saab</option>
             <option value="mercedes">Mercedes</option>
@@ -44,18 +51,18 @@ const Articles = () => {
           {articles.map((el) => {
             return (
               <PanelBox className="m-3">
-                <div className="cursor-pointer">
+                <div className="cursor-pointer" onClick={() => router.push(`/articles/${el.id}`)}>
                   <h3 className="">{el.heading}</h3>
                   <div className="flex mt-2 gap-2">
                     <div className="bg-green-300 rounded-full px-2">
                       <span>category: </span>
                       <span>{el.category}</span>
                     </div>
-                    <div className="bg-green-300 rounded-full px-2">
+                    <div className="bg-yellow-300 rounded-full px-2">
                       <span>source: </span>
                       <span>{el.source}</span>
                     </div>
-                    <div className="bg-green-300 rounded-full px-2">
+                    <div className="bg-orange-300 rounded-full px-2">
                       <span>arthur: </span>
                       <span>{el.arthur}</span>
                     </div>
