@@ -1,3 +1,10 @@
+# Docker Installation
+
+```sh
+docker-compose build
+docker-compose up
+```
+
 # Backend(Laravel)
 
 I used laravel 10.48.20v version and php 8.3.11v along with postgresql(16.4v) realtional database. 

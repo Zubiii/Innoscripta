@@ -1,0 +1,64 @@
+services:
+  # Laravel Backend
+  backend:
+    build:
+      context: ./backend
+    container_name: laravel_backend
+    volumes:
+      - ./backend:/var/www
+    ports:
+      - "8000:8000"
+    networks:
+      - app-network
+    environment:
+      - DB_CONNECTION=pgsql
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_DATABASE=laravel_db
+      - DB_USERNAME=laravel_user
+      - DB_PASSWORD=secret
+
+  # Next.js Frontend
+  frontend:
+    build:
+      context: ./frontend
+    container_name: nextjs_frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+  # PostgreSQL Database
+  db:
+    image: postgres:14
+    container_name: postgres_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: laravel_db
+      POSTGRES_USER: laravel_user
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+
+  # Cron Job for Laravel Scheduler
+  scheduler:
+    image: php:8.1-cli
+    container_name: laravel_scheduler
+    volumes:
+      - ./backend:/var/www
+    command: ["cron", "-f"]
+    networks:
+      - app-network
+    entrypoint: ["/bin/sh", "-c", "cron && php /var/www/artisan schedule:run"]
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge
